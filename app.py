@@ -17,12 +17,14 @@ from keras.models import model_from_json
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-HTTP_PROXY = {'http': f'http://{os.getenv("HTTP_PROXY")}'}
-HTTPS_PROXY = {'https': f'https://{os.getenv("HTTP_PROXY")}'}
+PROXY = {
+    'http': f'http://{os.getenv("HTTP_PROXY")}',
+    'https': f'https://{os.getenv("HTTP_PROXY")}'
+}
 IMAGE_SIZE=(28, 28)
 IMAGE_PREDICT_SIZE=(1, 28, 28, 1)
 
-apihelper.proxy = HTTPS_PROXY
+apihelper.proxy = PROXY
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -47,12 +49,12 @@ graph = tf.get_default_graph()
 
 ############ HELPERS ############
 def get_file_path(file_id):
-    response = urlopen(f'https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}', proxies=HTTPS_PROXY)
+    response = urlopen(f'https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}', proxies=PROXY)
     data = json.load(response)
     return data['result']['file_path']
 
 def get_file(file_path):
-    response = urlopen(f'https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}', proxies=HTTPS_PROXY)
+    response = urlopen(f'https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}', proxies=PROXY)
     img = np.array(Image.open(BytesIO(response.read())).resize(IMAGE_SIZE).convert('L'))
     return img
 
