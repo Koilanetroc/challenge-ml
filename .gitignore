@@ -3,3 +3,7 @@
 *.pdf
 train/*
 .env
+*.h5
+*.json
+*.csv
+.ipynb_checkpoints/*

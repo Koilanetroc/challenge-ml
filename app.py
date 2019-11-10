@@ -72,7 +72,7 @@ def predict_player(img):
 @bot.message_handler(commands=['start'])
 def start_message(message):
     bot.send_message(message.chat.id, 'Добрый день!\nЭтот бот является решением koilanetroc@gmail.com конкурса Uma.Challenge по треку Machine Learning.')
-    bot.send_message(message.chat.id, 'Отправьте фотографию футболиста в несжатом виде и я скажу его лейбл')
+    bot.send_message(message.chat.id, 'Отправьте фотографию футболиста в несжатом виде(файл, не картинка) и я скажу его лейбл')
 
 @bot.message_handler(content_types=['document'])
 def handle_docs_audio(message):
