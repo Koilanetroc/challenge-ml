@@ -2,6 +2,7 @@ import os
 import telebot
 import logging
 import json
+import requests
 from io import BytesIO
 import tensorflow as tf
 from urllib.request import urlopen
@@ -49,13 +50,13 @@ graph = tf.get_default_graph()
 
 ############ HELPERS ############
 def get_file_path(file_id):
-    response = urlopen(f'https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}', proxies=PROXY)
-    data = json.load(response)
+    response = requests.get(f'https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}', proxies=PROXY)
+    data = response.json()
     return data['result']['file_path']
 
 def get_file(file_path):
-    response = urlopen(f'https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}', proxies=PROXY)
-    img = np.array(Image.open(BytesIO(response.read())).resize(IMAGE_SIZE).convert('L'))
+    response = requests.get(f'https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}', proxies=PROXY)
+    img = np.array(Image.open(BytesIO(response.content)).resize(IMAGE_SIZE).convert('L'))
     return img
 
 def predict_player(img):
