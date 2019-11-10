@@ -10,4 +10,3 @@ app_user="root"
 foreman export systemd --app $app_name -p$app_port --user $app_user /etc/systemd/system
 systemctl daemon-reload
 systemctl restart $app_name.target
-systemctl restart $app_name-worker.target
