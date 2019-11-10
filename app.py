@@ -13,16 +13,16 @@ import numpy as np
 
 from keras.models import model_from_json
 
-
 ############ INITIALIZE ############
 load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-PROXY = {'http': f'http://{os.getenv("HTTP_PROXY")}'}
+HTTP_PROXY = {'http': f'http://{os.getenv("HTTP_PROXY")}'}
+HTTPS_PROXY = {'https': f'https://{os.getenv("HTTP_PROXY")}'}
 IMAGE_SIZE=(28, 28)
 IMAGE_PREDICT_SIZE=(1, 28, 28, 1)
 
-apihelper.proxy = PROXY
+apihelper.proxy = HTTPS_PROXY
 
 bot = telebot.TeleBot(BOT_TOKEN)
 
@@ -47,12 +47,12 @@ graph = tf.get_default_graph()
 
 ############ HELPERS ############
 def get_file_path(file_id):
-    response = urlopen(f'https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}')
+    response = urlopen(f'https://api.telegram.org/bot{BOT_TOKEN}/getFile?file_id={file_id}', proxies=HTTPS_PROXY)
     data = json.load(response)
     return data['result']['file_path']
 
 def get_file(file_path):
-    response = urlopen(f'https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}')
+    response = urlopen(f'https://api.telegram.org/file/bot{BOT_TOKEN}/{file_path}', proxies=HTTPS_PROXY)
     img = np.array(Image.open(BytesIO(response.read())).resize(IMAGE_SIZE).convert('L'))
     return img
 
