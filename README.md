@@ -21,3 +21,7 @@
 ## Запуск
 - pip3 install -r requirements.txt
 - python3 app.py
+
+## Готовый чат-бот
+
+Готовый телеграм чат-бот: @uma_challenge_ml_bot
